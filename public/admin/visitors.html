@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visitor Analytics Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            color: white;
+            padding: 30px 0;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .stat-card h3 {
+            color: #6b7280;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #1e40af;
+        }
+        
+        .section {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .section h2 {
+            margin-bottom: 20px;
+            color: #1e40af;
+            border-bottom: 3px solid #3b82f6;
+            padding-bottom: 10px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th {
+            background: #f3f4f6;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            color: #374151;
+            border-bottom: 2px solid #e5e7eb;
+        }
+        
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        tr:hover {
+            background: #f9fafb;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .badge-mobile {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .badge-desktop {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .badge-tablet {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 50px;
+            font-size: 1.2rem;
+            color: #6b7280;
+        }
+        
+        .error {
+            background: #fef2f2;
+            color: #991b1b;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #dc2626;
+        }
+        
+        .refresh-btn {
+            background: #1e40af;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-bottom: 20px;
+            transition: background 0.2s;
+        }
+        
+        .refresh-btn:hover {
+            background: #1e3a8a;
+        }
+        
+        .chart-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .bar-chart {
+            margin: 10px 0;
+        }
+        
+        .bar-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .bar-label {
+            width: 120px;
+            font-size: 0.9rem;
+            color: #4b5563;
+        }
+        
+        .bar {
+            flex: 1;
+            height: 30px;
+            background: linear-gradient(90deg, #3b82f6, #60a5fa);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+            color: white;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            table {
+                font-size: 0.85rem;
+            }
+            
+            th, td {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>📊 Visitor Analytics Dashboard</h1>
+            <p class="subtitle">Real-time visitor tracking and statistics</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <button class="refresh-btn" onclick="loadStats()">🔄 Refresh Data</button>
+        
+        <div id="content">
+            <div class="loading">⏳ Loading statistics...</div>
+        </div>
+    </div>
+    
+    <script>
+        // Load statistics when page loads
+        window.addEventListener('DOMContentLoaded', loadStats);
+        
+        async function loadStats() {
+            const content = document.getElementById('content');
+            content.innerHTML = '<div class="loading">⏳ Loading statistics...</div>';
+            
+            try {
+                const response = await fetch('/api/get-visitor-stats.php');
+                const data = await response.json();
+                
+                if (data.success) {
+                    displayStats(data);
+                } else {
+                    content.innerHTML = '<div class="error">❌ Failed to load statistics</div>';
+                }
+            } catch (error) {
+                content.innerHTML = '<div class="error">❌ Error: ' + error.message + '</div>';
+            }
+        }
+        
+        function displayStats(data) {
+            const content = document.getElementById('content');
+            const { stats, topCountries, topCities, deviceTypes, topBrowsers, topOS, recentVisitors } = data;
+            
+            let html = `
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Total Visitors</h3>
+                        <div class="stat-value">${stats.total}</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Today</h3>
+                        <div class="stat-value">${stats.today}</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>This Week</h3>
+                        <div class="stat-value">${stats.week}</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>This Month</h3>
+                        <div class="stat-value">${stats.month}</div>
+                    </div>
+                </div>
+                
+                <!-- Device Types -->
+                <div class="section">
+                    <h2>Device Types</h2>
+                    <div class="bar-chart">
+                        ${deviceTypes.map(device => {
+                            const percentage = (device.count / stats.total * 100).toFixed(1);
+                            return `
+                                <div class="bar-item">
+                                    <div class="bar-label">${device.device_type}</div>
+                                    <div class="bar" style="width: ${percentage}%">
+                                        ${device.count} (${percentage}%)
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+                
+                <!-- Top Countries -->
+                <div class="section">
+                    <h2>Top Countries</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Country</th>
+                                <th>Visitors</th>
+                                <th>Percentage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${topCountries.map(country => `
+                                <tr>
+                                    <td>${country.country}</td>
+                                    <td>${country.count}</td>
+                                    <td>${(country.count / stats.total * 100).toFixed(1)}%</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Top Cities -->
+                <div class="section">
+                    <h2>Top Cities</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>City</th>
+                                <th>Country</th>
+                                <th>Visitors</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${topCities.map(city => `
+                                <tr>
+                                    <td>${city.city}</td>
+                                    <td>${city.country}</td>
+                                    <td>${city.count}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Top Browsers -->
+                <div class="section">
+                    <h2>Top Browsers</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Browser</th>
+                                <th>Visitors</th>
+                                <th>Percentage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${topBrowsers.map(browser => `
+                                <tr>
+                                    <td>${browser.browser_name}</td>
+                                    <td>${browser.count}</td>
+                                    <td>${(browser.count / stats.total * 100).toFixed(1)}%</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Top Operating Systems -->
+                <div class="section">
+                    <h2>Top Operating Systems</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Operating System</th>
+                                <th>Visitors</th>
+                                <th>Percentage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${topOS.map(os => `
+                                <tr>
+                                    <td>${os.operating_system}</td>
+                                    <td>${os.count}</td>
+                                    <td>${(os.count / stats.total * 100).toFixed(1)}%</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Recent Visitors -->
+                <div class="section">
+                    <h2>Recent Visitors (Last 50)</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Device</th>
+                                <th>Browser</th>
+                                <th>OS</th>
+                                <th>Location</th>
+                                <th>Page</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${recentVisitors.map(visitor => {
+                                const time = new Date(visitor.visit_time).toLocaleString();
+                                const deviceBadge = visitor.device_type.toLowerCase();
+                                return `
+                                    <tr>
+                                        <td>${time}</td>
+                                        <td><span class="badge badge-${deviceBadge}">${visitor.device_type}</span></td>
+                                        <td>${visitor.browser_name}</td>
+                                        <td>${visitor.operating_system}</td>
+                                        <td>${visitor.city}, ${visitor.country}</td>
+                                        <td>${visitor.page_url.substring(0, 50)}...</td>
+                                    </tr>
+                                `;
+                            }).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            
+            content.innerHTML = html;
+        }
+    </script>
+</body>
+</html>
+

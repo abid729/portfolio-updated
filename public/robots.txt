@@ -1,0 +1,7 @@
+# Robots.txt for Portfolio Website
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://your-username.github.io/MyPortfolioWebsite/sitemap.xml
+
