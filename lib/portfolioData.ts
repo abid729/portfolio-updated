@@ -6,8 +6,8 @@ export const personalInfo = {
   title: "Full-Stack Developer",
   subtitle: "Sr. Laravel, PHP, React.js & Next.js Developer",
   location: "Lahore, Pakistan",
-  experience: "5+ Years",
-  bio: "Passionate Full-Stack Developer with over 5 years of experience building scalable web applications. I specialize in backend development with Laravel and PHP, while also crafting modern, responsive frontends using React.js and Next.js. I love turning complex problems into simple, beautiful, and intuitive solutions.",
+  experience: "4+ Years",
+  bio: "Passionate Full-Stack Developer with over 4 years of experience building scalable web applications. I specialize in backend development with Laravel and PHP, while also crafting modern, responsive frontends using React.js and Next.js. I love turning complex problems into simple, beautiful, and intuitive solutions.",
   email: "abidali31570@gmail.com",
   phone: "+923048948784",
   resumeUrl: "/resume.pdf",
@@ -132,7 +132,7 @@ export const experiences = [
   {
     id: 1,
     position: "Senior Full-Stack Developer",
-    company: "Tech Solutions Inc.",
+    company: "Arhamsoft.",
     location: "Lahore, Pakistan",
     period: "Jan 2022 - Present",
     description: "Leading development of enterprise web applications using Laravel and React.js. Managing a team of 5 developers and implementing best practices.",
@@ -145,9 +145,9 @@ export const experiences = [
   {
     id: 2,
     position: "Full-Stack Developer",
-    company: "Digital Agency XYZ",
+    company: "BMA Solutions",
     location: "Lahore, Pakistan",
-    period: "Mar 2020 - Dec 2021",
+    period: "Mar 2021 - Dec 2021",
     description: "Developed and maintained multiple client projects using Laravel, PHP, and modern JavaScript frameworks.",
     achievements: [
       "Delivered 20+ successful projects",
@@ -155,27 +155,15 @@ export const experiences = [
       "Reduced deployment time by 70%"
     ]
   },
-  {
-    id: 3,
-    position: "PHP Developer",
-    company: "Web Solutions Ltd.",
-    location: "Lahore, Pakistan",
-    period: "Jun 2019 - Feb 2020",
-    description: "Built custom PHP applications and WordPress plugins for various clients. Focused on backend development and API integration.",
-    achievements: [
-      "Created reusable component library",
-      "Optimized database queries",
-      "Integrated third-party APIs"
-    ]
-  }
+  
 ];
 
 export const education = [
   {
     degree: "Bachelor of Science in Computer Science",
-    institution: "University of Punjab",
+    institution: "Virtual University of Pakistan",
     location: "Lahore, Pakistan",
-    year: "2015 - 2019",
+    year: "2018 - 2020",
     grade: "CGPA: 3.7/4.0"
   }
 ];

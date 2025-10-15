@@ -46,15 +46,15 @@ export default function About() {
           {/* Right Column - Stats */}
           <div className="grid grid-cols-2 gap-6">
             <div className="bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-xl p-6 shadow-lg transform hover:scale-105 transition-transform duration-300">
-              <div className="text-4xl font-bold mb-2">5+</div>
+              <div className="text-4xl font-bold mb-2">4+</div>
               <div className="text-blue-100">Years Experience</div>
             </div>
             <div className="bg-gradient-to-br from-teal-500 to-teal-600 text-white rounded-xl p-6 shadow-lg transform hover:scale-105 transition-transform duration-300">
-              <div className="text-4xl font-bold mb-2">50+</div>
+              <div className="text-4xl font-bold mb-2">35+</div>
               <div className="text-teal-100">Projects Completed</div>
             </div>
             <div className="bg-gradient-to-br from-purple-500 to-purple-600 text-white rounded-xl p-6 shadow-lg transform hover:scale-105 transition-transform duration-300">
-              <div className="text-4xl font-bold mb-2">30+</div>
+              <div className="text-4xl font-bold mb-2">20+</div>
               <div className="text-purple-100">Happy Clients</div>
             </div>
             <div className="bg-gradient-to-br from-pink-500 to-pink-600 text-white rounded-xl p-6 shadow-lg transform hover:scale-105 transition-transform duration-300">
