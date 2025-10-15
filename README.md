@@ -229,3 +229,4 @@ MIT License - feel free to use this template for your own portfolio!
 ---
 
 Built with ❤️ using Next.js
+# portfolio-updated
